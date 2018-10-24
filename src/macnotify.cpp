@@ -100,8 +100,18 @@ namespace  macnotify{
         sigdelset(&sigactInt.sa_mask,   SIGINT);
         if(sigprocmask(0, nullptr, &sigsetBck) != 0)
             throw string("MacNotify: Error getting the signal mask.");
+        
+        #ifdef __GNUC__
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wunused-result"
+        #endif
+
         sigactUsr1.sa_flags          = 0;
-        sigactUsr1.sa_handler        = [](int){ write(Dumper::getWriteFd(), reinterpret_cast<const void*>(pipeMsg.data()), pipeMsg.size());};
+        sigactUsr1.sa_handler        = [](int){ static_cast<void>(write(Dumper::getWriteFd(), reinterpret_cast<const void*>(pipeMsg.data()), pipeMsg.size()));};
+
+        #ifdef __GNUC__
+        #pragma GCC diagnostic pop
+        #endif
 
         sigactInt.sa_flags           = 0;
         sigactInt.sa_handler         = [](int){ MacNotify::stop = true; };
@@ -334,6 +344,9 @@ namespace  macnotify{
             break;
 
             case RTM_DELNEIGH:
+                #ifdef __clang__
+                    [[clang::fallthrough]];
+                #endif
             case RTM_GETNEIGH:
                 if(debug) Logger::getInst().procLogger(DEBUG, "Message type: RTM_DELNEIGH/RTM_GETNEIGH");
             break;
