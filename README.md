@@ -1,11 +1,11 @@
 Description:
 ============
 
-Macnotifier is an utility permitting to start automatically programs or scripts associated to a specific MAC Addresses or company IDs (as it appear in the IEEE registers used to create the DB containing the MAC adresses blocks assignees), when they are notified to the system running this program. To efficientlt catch the incoming notification, a Linux kernel Netlink socket is used.  
+Macnotifier is an utility permitting to start automatically programs or scripts associated to a specific MAC Addresses or company IDs (as it appear in the IEEE registers used to create the DB containing the MAC adresses blocks assignees), when they are notified to the system running this program. To efficiently catch the incoming notification, a Linux kernel Netlink socket is used.  
 
 * Possible uses: 
 
-- Automatic execution of tasks when the computer running the program is present in specific locations (office, home, etc ), binding the MAC addresses of machine presents for sure in that locations ( a server, a NAS, etc);
+- Automatic execution of tasks when the computer running the program is present in specific locations (office, home, etc ), including  the MAC addresses of machine presents for sure in that locations ( a server, a NAS, etc) in the configuration file;
 - Automatic notifications of the presence of some specific machine in your network;
 - Automatically test/pentest any specific MACs/Class of MACs as soos as they are recognized;
 
@@ -43,6 +43,7 @@ Instructions:
 
 - a MAC addresses lookup file must be created from IEEE registers. Detailed instructions are present int the maclookup utility README (./utils directory);
 - a LUA configuration file must be provided. An example is presento in ./test directory (macnotifier.lua):
+
 <BR>
 --[[ Flag:           dumpfile<BR>
      Type:           string<BR>
