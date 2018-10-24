@@ -95,48 +95,48 @@ void versionInfo(void) noexcept{
 }
 
 int daemonize(void){
-	int fdMax, 
-	    thisFd;
+    int fdMax, 
+        thisFd;
 
-	switch(fork()){
-		case -1:
-			return -1;
-		break;
-		case 0:
-			                      // Child: No action
-		break;
-		default:
-			_exit(EXIT_SUCCESS);
-	}
+    switch(fork()){
+        case -1:
+            return -1;
+        break;
+        case 0:
+                                  // Child: No action
+        break;
+        default:
+            _exit(EXIT_SUCCESS);
+    }
 
-	if(setsid() == -1) return -1; // Session Leader
+    if(setsid() == -1) return -1; // Session Leader
 
-	switch(fork()){               // To be sure that the daemon isn't sessio leader
-		case -1:
-			return -1;
-		break;
-		case 0:
-			                      // Child: No action
-		break;
-		default:
-			_exit(EXIT_SUCCESS);
-	}
+    switch(fork()){               // To be sure that the daemon isn't sessio leader
+        case -1:
+            return -1;
+        break;
+        case 0:
+                                  // Child: No action
+        break;
+        default:
+            _exit(EXIT_SUCCESS);
+    }
 
-	umask(0);                     // Clear umask
-	if(chdir("/") != 0) throw string("chdir fails");
+    umask(0);                     // Clear umask
+    if(chdir("/") != 0) throw string("chdir fails");
 
-	fdMax=sysconf(_SC_OPEN_MAX);
+    fdMax=sysconf(_SC_OPEN_MAX);
 
-	if(fdMax == -1) fdMax  =  8192;
-		
-	for(thisFd=0; thisFd<fdMax; thisFd++)
-		close(fdMax);
+    if(fdMax == -1) fdMax  =  8192;
+        
+    for(thisFd=0; thisFd<fdMax; thisFd++)
+        close(fdMax);
 
-	thisFd    =    open(STD_FILL_DEVICE.c_str(), O_RDWR);
-	if(thisFd != STDIN_FILENO                 || 
+    thisFd    =    open(STD_FILL_DEVICE.c_str(), O_RDWR);
+    if(thisFd != STDIN_FILENO                 || 
            dup2(STDIN_FILENO, STDOUT_FILENO)  || 
-	       dup2(STDIN_FILENO, STDERR_FILENO)) 
+           dup2(STDIN_FILENO, STDERR_FILENO)) 
        return -1;
 
-	return 0;
+    return 0;
 }

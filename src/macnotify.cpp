@@ -314,32 +314,32 @@ namespace  macnotify{
 
             if(debug) Logger::getInst().procLogger(DEBUG, {"Received: ", to_string(received)});
     
-	        switch (hdr->nlmsg_type) {
-		    case RTM_NEWNEIGH:
+            switch (hdr->nlmsg_type) {
+            case RTM_NEWNEIGH:
                 if(debug) Logger::getInst().procLogger(DEBUG, "Message type: RTM_NEWNEIGH");
-			    attr = reinterpret_cast<Nlattr*>(nd + 1);
-			    while ((reinterpret_cast<uint8_t*>(attr) - buff.data()) < hdr->nlmsg_len) {
+                attr = reinterpret_cast<Nlattr*>(nd + 1);
+                while ((reinterpret_cast<uint8_t*>(attr) - buff.data()) < hdr->nlmsg_len) {
                     if(debug) Logger::getInst().procLogger(DEBUG, "Parsing resp");
     
                     copy(reinterpret_cast<uint8_t *>(attr) + NLA_HDRLEN, 
                          reinterpret_cast<uint8_t *>(attr) + NLA_HDRLEN + STD_MAC_SIZE,
                          data.data());
      
-				    if (attr->nla_type == NDA_LLADDR && nd->ndm_state == NUD_REACHABLE) {
+                    if (attr->nla_type == NDA_LLADDR && nd->ndm_state == NUD_REACHABLE) {
                         if(debug) Logger::getInst().procLogger(DEBUG, MacLookup::printMacStr(data));
                         handleEvent(data);
-				    }
-				    attr = reinterpret_cast<Nlattr*>(reinterpret_cast<uint8_t*>(attr) + NLA_ALIGN(attr->nla_len));
-			    }
-		    break;
+                    }
+                    attr = reinterpret_cast<Nlattr*>(reinterpret_cast<uint8_t*>(attr) + NLA_ALIGN(attr->nla_len));
+                }
+            break;
 
-		    case RTM_DELNEIGH:
-		    case RTM_GETNEIGH:
+            case RTM_DELNEIGH:
+            case RTM_GETNEIGH:
                 if(debug) Logger::getInst().procLogger(DEBUG, "Message type: RTM_DELNEIGH/RTM_GETNEIGH");
-		    break;
-		    default:
+            break;
+            default:
                 Logger::getInst().procLogger(ERRORS, {"Unknown message type:", to_string(hdr->nlmsg_type)});
-	        }
+            }
         }
     }
 

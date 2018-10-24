@@ -61,13 +61,13 @@ namespace macnotifycfg {
            ~MacNotifyConfig(void);
     
            void                        loadConfig(void)                                            anyexcept;
-	       const std::string&          getLogFile(void)                                  const     noexcept;
-	       const std::string&          getDumpFile(void)                                 const     noexcept;
-	       macnotify::LOGLEVEL         getLogLevel(void)                                 const     noexcept;
-	       time_t                      getTimeout(void)                                  const     noexcept;
-	       const std::string&          getLookupDbFile(void)                             const     noexcept;
-	       bool                        isTriggered(const MacString mac)                  const     noexcept;
-	       const AssociatedTriggers&   getTriggers(const MacString mac)                  const     noexcept;
+           const std::string&          getLogFile(void)                                  const     noexcept;
+           const std::string&          getDumpFile(void)                                 const     noexcept;
+           macnotify::LOGLEVEL         getLogLevel(void)                                 const     noexcept;
+           time_t                      getTimeout(void)                                  const     noexcept;
+           const std::string&          getLookupDbFile(void)                             const     noexcept;
+           bool                        isTriggered(const MacString mac)                  const     noexcept;
+           const AssociatedTriggers&   getTriggers(const MacString mac)                  const     noexcept;
 
         private:
            lua_State                   *luaState;

@@ -26,126 +26,126 @@ using std::pair;
 
 namespace parCmdLine{
 
-	ParseCmdLine::ParseCmdLine(int argc, char **argv, const char* flags) 
-	     : errState{false}, unflaggedParams{false},
-		   argcRef{argc},   errString{""},
-		   unflaggedArgs{"noparams"}
-	{
-		tokenizeFlags(flags);
-		parseArgs(argv, flags);
-	}
+    ParseCmdLine::ParseCmdLine(int argc, char **argv, const char* flags) 
+         : errState{false}, unflaggedParams{false},
+           argcRef{argc},   errString{""},
+           unflaggedArgs{"noparams"}
+    {
+        tokenizeFlags(flags);
+        parseArgs(argv, flags);
+    }
 
-	bool ParseCmdLine::isSet(char flag) const noexcept{
-		if(flagsStatus.find(flag) != flagsStatus.end())
-			if(flagsStatus.at(flag).isPresent)
-			    return true;
-		
-		return false;
-	}
+    bool ParseCmdLine::isSet(char flag) const noexcept{
+        if(flagsStatus.find(flag) != flagsStatus.end())
+            if(flagsStatus.at(flag).isPresent)
+                return true;
+        
+        return false;
+    }
 
-	bool ParseCmdLine::isLegal(char flag)  const noexcept{
-		if(flagsStatus.find(flag) != flagsStatus.end())
-			    return true;
+    bool ParseCmdLine::isLegal(char flag)  const noexcept{
+        if(flagsStatus.find(flag) != flagsStatus.end())
+                return true;
 
-		return false;
-	}
+        return false;
+    }
 
-	bool ParseCmdLine::hasValue(char flag) const noexcept{
-		if(flagsStatus.find(flag) != flagsStatus.end())
-			if(flagsStatus.at(flag).hasValue)
-			    return true;
+    bool ParseCmdLine::hasValue(char flag) const noexcept{
+        if(flagsStatus.find(flag) != flagsStatus.end())
+            if(flagsStatus.at(flag).hasValue)
+                return true;
 
-		return false;
-	}
+        return false;
+    }
 
-	bool  ParseCmdLine::hasUnflaggedPars(void) const noexcept{
+    bool  ParseCmdLine::hasUnflaggedPars(void) const noexcept{
         return unflaggedParams;
-	}
+    }
 
-	const string& ParseCmdLine::getUnflaggedPars(void) const noexcept{
+    const string& ParseCmdLine::getUnflaggedPars(void) const noexcept{
         return unflaggedArgs;
-	}
+    }
 
-	const string& ParseCmdLine::getValue(char flag) const noexcept{
-		if(flagsStatus.find(flag) != flagsStatus.end())
-			if(flagsStatus.at(flag).hasValue)
-				return flagsStatus.at(flag).value;
+    const string& ParseCmdLine::getValue(char flag) const noexcept{
+        if(flagsStatus.find(flag) != flagsStatus.end())
+            if(flagsStatus.at(flag).hasValue)
+                return flagsStatus.at(flag).value;
 
-		return errString;
-	}
+        return errString;
+    }
 
-	bool ParseCmdLine::setOn(char flag) noexcept{
-		if(flagsStatus.find(flag) == flagsStatus.end())
-			return false;
+    bool ParseCmdLine::setOn(char flag) noexcept{
+        if(flagsStatus.find(flag) == flagsStatus.end())
+            return false;
 
-		if(flagsStatus[flag].isPresent)
-			return false;
+        if(flagsStatus[flag].isPresent)
+            return false;
 
         flagsStatus[flag].isPresent         = true;
-		return true;
-	}
+        return true;
+    }
 
-	bool ParseCmdLine::getErrorState() const noexcept{
-		return errState;
-	}
+    bool ParseCmdLine::getErrorState() const noexcept{
+        return errState;
+    }
 
-	bool ParseCmdLine::setErrorState(bool state) const noexcept{
-		errState      =  state;
-		return !state;
-	}
+    bool ParseCmdLine::setErrorState(bool state) const noexcept{
+        errState      =  state;
+        return !state;
+    }
 
-	bool ParseCmdLine::parseArgs(char **argv, const char* flags) noexcept{
-		char   c;
+    bool ParseCmdLine::parseArgs(char **argv, const char* flags) noexcept{
+        char   c;
 
-		while ((c = getopt (argcRef, argv, flags)) != -1){
-			if(c != '?' && c > 0){
-		        if(flagsStatus.find(c) == flagsStatus.end())
-					return setErrorState(true);
+        while ((c = getopt (argcRef, argv, flags)) != -1){
+            if(c != '?' && c > 0){
+                if(flagsStatus.find(c) == flagsStatus.end())
+                    return setErrorState(true);
 
-				if(!setOn(c))
-					return setErrorState(true);
+                if(!setOn(c))
+                    return setErrorState(true);
 
-				if(flagsStatus[c].hasValue){
-					if(optarg == nullptr || optarg[0] == '-')
-					    return setErrorState(true);
+                if(flagsStatus[c].hasValue){
+                    if(optarg == nullptr || optarg[0] == '-')
+                        return setErrorState(true);
 
-					flagsStatus[c].value.insert(0, optarg);
-				}
-			}else if(c == '?' &&  c > 0){
-					return setErrorState(true);
-			}else{
-				break;
-			}
-		}
+                    flagsStatus[c].value.insert(0, optarg);
+                }
+            }else if(c == '?' &&  c > 0){
+                    return setErrorState(true);
+            }else{
+                break;
+            }
+        }
 
-		if(argcRef > optind){
-		    unflaggedParams = true;
-		    unflaggedArgs   = argv[optind];
-		}
+        if(argcRef > optind){
+            unflaggedParams = true;
+            unflaggedArgs   = argv[optind];
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	bool ParseCmdLine::tokenizeFlags(const char* flags) noexcept{
-		int         pos                           =  0; 
-		char        prevKey                       =  0; 
+    bool ParseCmdLine::tokenizeFlags(const char* flags) noexcept{
+        int         pos                           =  0; 
+        char        prevKey                       =  0; 
 
-		while(flags[pos] != 0){
-			if((flags[pos] >= 65 && flags[pos] <= 90) || ( flags[pos] >= 97 && flags[pos] <= 122)){
-				prevKey                                  =  flags[pos];
-			    flagsStatus.insert(pair<char, ParseResult>(flags[pos], {false, false, ""}));
-			}else if(flags[pos] == 58){
-				if(prevKey == 0)
-					return setErrorState(true);
+        while(flags[pos] != 0){
+            if((flags[pos] >= 65 && flags[pos] <= 90) || ( flags[pos] >= 97 && flags[pos] <= 122)){
+                prevKey                                  =  flags[pos];
+                flagsStatus.insert(pair<char, ParseResult>(flags[pos], {false, false, ""}));
+            }else if(flags[pos] == 58){
+                if(prevKey == 0)
+                    return setErrorState(true);
 
-				flagsStatus[prevKey].hasValue     =  true;
-			}else{
-				return setErrorState(true);
-			}
-			pos++;
-		}
+                flagsStatus[prevKey].hasValue     =  true;
+            }else{
+                return setErrorState(true);
+            }
+            pos++;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
 } // End Namespace 

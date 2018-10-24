@@ -44,7 +44,7 @@ Logger::Logger(const string&  fileName, uint32_t llevel)
     : logLevel{llevel}
 {
      mainLogStr.open(fileName, fstream::out | fstream::app);
-	 procLogger(DEBUG, string("LogFile: ").append(fileName));
+     procLogger(DEBUG, string("LogFile: ").append(fileName));
 }
 
 Logger::~Logger(void){
@@ -73,34 +73,34 @@ bool Logger::setLevel(const string& newLev)  noexcept {
 }
 
 void Logger::procLogger(uint32_t logLev, const string& msg) const anyexcept{
-	system_clock::time_point evTime = system_clock::now();
-	time_t                   evTt   = system_clock::to_time_t(evTime);
-	char                     timeBuff[STD_TBUFF_SIZE];
+    system_clock::time_point evTime = system_clock::now();
+    time_t                   evTt   = system_clock::to_time_t(evTime);
+    char                     timeBuff[STD_TBUFF_SIZE];
 
-	strftime(timeBuff, sizeof(timeBuff), "%A %c", localtime(&evTt));
+    strftime(timeBuff, sizeof(timeBuff), "%A %c", localtime(&evTt));
 
     logFileMtx.lock();
 
-	if(logLev <= logLevel){
+    if(logLev <= logLevel){
         if(mainLogStr.is_open())
            mainLogStr << "[MACNotif : " << timeBuff << "]  " << msg << endl;
-	    else
+        else
            cerr       << "[MACNotif : " << timeBuff << "]  " << msg << endl;
-	}
+    }
 
     logFileMtx.unlock();
 }
 
 void Logger::procLogger(uint32_t logLev, const initializer_list<string>& msg) const anyexcept{
-	system_clock::time_point evTime = system_clock::now();
-	time_t                   evTt   = system_clock::to_time_t(evTime);
-	char                     timeBuff[STD_TBUFF_SIZE];
+    system_clock::time_point evTime = system_clock::now();
+    time_t                   evTt   = system_clock::to_time_t(evTime);
+    char                     timeBuff[STD_TBUFF_SIZE];
 
-	strftime(timeBuff, sizeof(timeBuff), "%A %c", localtime(&evTt));
+    strftime(timeBuff, sizeof(timeBuff), "%A %c", localtime(&evTt));
 
     logFileMtx.lock();
 
-	if(logLev <= logLevel){
+    if(logLev <= logLevel){
         if(mainLogStr.is_open()){
             mainLogStr  << "[MACNotif : " << timeBuff << "]  ";
             for(auto el : msg)
@@ -112,7 +112,7 @@ void Logger::procLogger(uint32_t logLev, const initializer_list<string>& msg) co
                 cerr << el;
             cerr  << endl;
         }
-	}
+    }
 
     logFileMtx.unlock();
 }
