@@ -1,0 +1,62 @@
+.TH MACNOTIFIER 1 "OCTOBER 2018" Linux "User Manuals"                                  
+.SH NAME                                                                     
+macnotifier \- an utility to start automatically programs or scripts when a MAC address is advertised to local system.
+.SH SYNOPSIS                                                                 
+.B  macnotifier  [ -c lua_config_file ] [-D] [ -d]
+            | [-h] | [-V]
+.SH DESCRIPTION                                                              
+.B macnotifier                                                                       
+is an utility permitting to launch automatically programs or scripts associated to a specific MAC Address or to a company id, as it appear in the DB containing the MAC adresses blocks assignees, when a specified MAC address or one or that assignee is notified to the system running this program. To efficiently catch the incoming notification, a Linux kernel Netlink socket is used.
+.SH OPTIONS                                                       
+.IP -c config.lua
+Mandatory option : Lua configuration file with path.
+.IP -d 
+Debug mode: disable the DEBUG level entries overridind the configuration file.
+.IP -D 
+Start the program in daemon mode.
+.IP -h
+A short description of macnotifier command line syntax.
+.IP -V
+Prints the macnotifier version and further information, if availables.
+.SH FILES                                                                    
+.IP config.lua
+A configuration file, here called 'config.lua', a LUA script,  must be provided with the -c option.
+In that file, this entries must be spcified:
+.SH CONFIGURATION 
+This section contains the syntax of the configuration file:
+.PP
+.B lookupfile = \(dqpath_MAC_Address_Lookup_File.csv\(dq
+.PP
+with path and name of the MAC addresses lookup csv file. For details, see the documentation of the utility maclookup, present in the same distibution of this program.
+.PP
+.B triggersByMac = {["MAC_key"] = \(dqprogram_path\(dq ... , ["MAC_key"] = \(dqprogram_path\(dq }
+.PP
+An associative array with the pairs MAC Address (keys), associated executable/script (values).
+.PP
+.B triggersByCompany = {["COMPANY_NAME"] = \(dqprogram_path\(dq ... , ["MAC_key"] = \(dqprogram_path\(dq }
+.PP
+An associative array with the pairs company name, as reported in the IEEE files (keys), associated executable/script (values).
+In the configuration file, these optional entries could be added:
+.PP
+.B timeout = number_of_seconds
+.PP
+The number of seconds to wait before re-execute the trigger on a MAC address or Company Id [default: 60]. There are also two special values: 0, execute immediatly every time, -1 execute once for that MAC or company id.
+.PP
+.B logfile = \(dqpath_of_log_file\(dq
+.PP
+A log file.[default: "/tmp/macnotifier.log"]
+.PP
+.B dumpfile = \(dqpath_of_dump_file\(dq
+.PP
+Sending a signal USR1 to the process, a dump file is created in this path  [default: "/tmp/macnotifier.log"]. The file contains all the MAC/Company Ids processed using the format: mac_or_company_name;last_view_epoch;last_trigger_epoch;last_vied_date;last_trigger_date; 
+.PP
+.B loglevel = \(dqlevel\(dq
+.PP
+The maximum log level of the generated log entries. [default: "errors", valid values: sysevents, errors, warnings, debug ]
+.PP
+.SH BUGS                                                                     
+This program is an alpha release. Please send me verified bug lists.
+.SH AUTHOR                                                                   
+Gabriele Bonacini <gabriele.bonacini@protonmail.com>
+.SH "SEE ALSO"                                                               
+.BR NETLINK(7), MACLOOKUP(1)

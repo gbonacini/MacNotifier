@@ -1,0 +1,27 @@
+.TH MACLOOKUP 1 "OCTOBER 2018" Linux "User Manuals"                                  
+.SH NAME                                                                     
+maclookup \- an utility to obtain the assignee of a MAC address, from a DB created from the IEEE registers.
+.SH SYNOPSIS                                                                 
+.B  maclookup [-c db_lookup.csv]  [ [-i] | [-l mac_address] ] | [-h] | [-V]
+.SH DESCRIPTION                                                              
+.B maclookup                                                                       
+maclookup is an utility permitting to obtain the assignee of a MAC address, from a DB created from the IEEE registers availables on line.
+A script, createDb.sh, is part of this distributions to help the creation of the DB. 
+.SH OPTIONS                                                       
+.IP -c dbname.csv
+This mandatory option specifies the lookdb file.
+.IP -l mac_address
+This option specifies that the program will run in comman line mode. So it's possible to insert a single MAC address , with format NN:NN:NN:NN:NN:NN (two hex digits pairs, ':' as separator) to translate. In case of correct lookup the program will return 0, 1 otherwise. 
+.IP -i 
+This option specifies that the program will run in iteractive mode. So it's possible to insert a MAC address a time, a new line to obtain the lookup. The 'end' command will terminate the session.
+.IP -h
+A short description of maclookup command line syntax.
+.IP -V
+Prints the maclookup version and further information, if availables.
+.SH FILES                                                                    
+.IP macdb.csv
+This is a conventional name for a DB created from the IEEE registers.
+.SH BUGS                                                                     
+This program is an alpha. Please send me verified bug lists.
+.SH AUTHOR                                                                   
+Gabriele Bonacini <gabriele.bonacini@protonmail.com>
