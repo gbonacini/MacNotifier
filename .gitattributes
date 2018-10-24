@@ -26,3 +26,11 @@ m4/ltoptions.m4 linguist-vendored
 m4/ltsugar.m4 linguist-vendored
 m4/ltversion.m4 linguist-vendored
 m4/lt~obsolete.m4 linguist-vendored
+Makefile.am linguist-vendored
+Makefile.in linguist-vendored
+src/Makefile.am linguist-vendored
+src/Makefile.in linguist-vendored
+utils/Makefile.am linguist-vendored
+utils/Makefile.in linguist-vendored
+utils/src/Makefile.am linguist-vendored
+utils/src/Makefile.in linguist-vendored
