@@ -20,3 +20,9 @@ autom4te.cache/traces.0 linguist-vendored
 autom4te.cache/traces.1 linguist-vendored
 autom4te.cache/traces.2 linguist-vendored
 autom4te.cache/traces.3 linguist-vendored
+m4/ax_lua.m4 linguist-vendored
+m4/libtool.m4 linguist-vendored
+m4/ltoptions.m4 linguist-vendored
+m4/ltsugar.m4 linguist-vendored
+m4/ltversion.m4 linguist-vendored
+m4/lt~obsolete.m4 linguist-vendored
