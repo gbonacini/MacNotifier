@@ -11,6 +11,12 @@ config.log linguist-vendored
 config.status linguist-vendored
 configure linguist-vendored
 configure.ac linguist-vendored
-autom4te.cache linguist-vendored 
-data linguist-vendored 
-m4 linguist-vendored 
+autom4te.cache/output.0 linguist-vendored
+autom4te.cache/output.1 linguist-vendored
+autom4te.cache/output.2 linguist-vendored
+autom4te.cache/output.3 linguist-vendored
+autom4te.cache/requests linguist-vendored
+autom4te.cache/traces.0 linguist-vendored
+autom4te.cache/traces.1 linguist-vendored
+autom4te.cache/traces.2 linguist-vendored
+autom4te.cache/traces.3 linguist-vendored
