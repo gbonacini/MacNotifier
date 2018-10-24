@@ -11,3 +11,6 @@ config.log linguist-vendored
 config.status linguist-vendored
 configure linguist-vendored
 configure.ac linguist-vendored
+autom4te.cache linguist-vendored 
+data linguist-vendored 
+m4 linguist-vendored 
